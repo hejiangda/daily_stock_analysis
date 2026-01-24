@@ -261,41 +261,58 @@ class DataFetcherManager:
         初始化默认数据源列表
 
         优先级动态调整逻辑：
-        - 如果配置了 TUSHARE_TOKEN：Tushare 优先级提升为 0（最高）
+        - 专业数据源（需要配置/客户端）优先级最高（-2, -1）
+        - 如果配置了 TUSHARE_TOKEN：Tushare 优先级提升为 0
         - 否则按默认优先级：
-          0. EfinanceFetcher (Priority 0) - 最高优先级
+          0. EfinanceFetcher (Priority 0)
           1. AkshareFetcher (Priority 1)
           2. TushareFetcher (Priority 2)
           3. BaostockFetcher (Priority 3)
           4. YfinanceFetcher (Priority 4)
         """
+        from .myquant_fetcher import MyQuantFetcher
+        from .miniqmt_fetcher import MiniQMTFetcher
         from .efinance_fetcher import EfinanceFetcher
         from .akshare_fetcher import AkshareFetcher
         from .tushare_fetcher import TushareFetcher
         from .baostock_fetcher import BaostockFetcher
         from .yfinance_fetcher import YfinanceFetcher
         from config import get_config
+        import os
 
         config = get_config()
+        fetchers_to_add = []
 
-        # 创建所有数据源实例（优先级在各 Fetcher 的 __init__ 中确定）
+        # 尝试初始化专业数据源（高优先级）
+        try:
+            if os.getenv('MYQUANT_TOKEN'):
+                myquant = MyQuantFetcher()
+                fetchers_to_add.append(myquant)
+                logger.info(f"已添加数据源: {myquant.name} (Priority {myquant.priority})")
+        except Exception as e:
+            logger.debug(f"掘金量化数据源初始化失败: {e}，跳过")
+
+        try:
+            # MiniQMT 需要客户端启动，尝试连接
+            from .miniqmt_fetcher import MiniQMTFetcher
+            minipmt = MiniQMTFetcher()
+            fetchers_to_add.append(minipmt)
+            logger.info(f"已添加数据源: {minipmt.name} (Priority {minipmt.priority})")
+        except Exception as e:
+            logger.debug(f"MiniQMT 数据源初始化失败: {e}，跳过")
+
+        # 创建免费数据源实例
         efinance = EfinanceFetcher()
         akshare = AkshareFetcher()
         tushare = TushareFetcher()  # 会根据 Token 配置自动调整优先级
         baostock = BaostockFetcher()
         yfinance = YfinanceFetcher()
 
-        # 初始化数据源列表
-        self._fetchers = [
-            efinance,
-            akshare,
-            tushare,
-            baostock,
-            yfinance,
-        ]
+        # 添加免费数据源
+        fetchers_to_add.extend([efinance, akshare, tushare, baostock, yfinance])
 
-        # 按优先级排序（Tushare 如果配置了 Token 且初始化成功，优先级为 0）
-        self._fetchers.sort(key=lambda f: f.priority)
+        # 按优先级排序
+        self._fetchers = sorted(fetchers_to_add, key=lambda f: f.priority)
 
         # 构建优先级说明
         priority_info = ", ".join([f"{f.name}(P{f.priority})" for f in self._fetchers])

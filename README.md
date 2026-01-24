@@ -22,11 +22,15 @@
 - **🔄 多模型支持** - 支持 OpenAI 兼容 API（DeepSeek、通义千问等）作为备选
 
 ### 📊 数据来源
-- **行情数据**: AkShare（免费）、Tushare、Baostock、YFinance
+- **行情数据**: 
+  - 专业平台：掘金量化、MiniQMT（需配置，最高优先级）
+  - 免费数据源：AkShare、Efinance、Tushare、Baostock、YFinance
 - **新闻搜索**: Tavily、SerpAPI、Bocha
 - **AI 分析**: 
   - 主力：Google Gemini（gemini-3-flash-preview）—— [免费获取](https://aistudio.google.com/)
   - 备选：应大家要求，也支持了OpenAI 兼容 API（DeepSeek、通义千问、Moonshot 等）
+
+> 📖 **专业数据源配置指南**: 查看 [掘金量化和 MiniQMT 使用指南](docs/myquant_minipmt_guide.md)
 
 ### 🛡️ 交易理念内置
 - ❌ **严禁追高** - 乖离率 > 5% 自动标记「危险」
