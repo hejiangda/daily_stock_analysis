@@ -110,6 +110,7 @@ daily_stock_analysis/
 | `BRAVE_API_KEYS` | [Brave Search](https://brave.com/search/api/) API（隐私优先，美股优化，多个key用逗号分隔） | 可选 |
 | `SERPAPI_API_KEYS` | [SerpAPI](https://serpapi.com/baidu-search-api?utm_source=github_daily_stock_analysis) 备用搜索 | 可选 |
 | `TUSHARE_TOKEN` | [Tushare Pro](https://tushare.pro/weborder/#/login?reg=834638 ) Token | 可选 |
+| `MYQUANT_TOKEN` | [MyQuant 掘金量化](https://www.myquant.cn/) Token（历史数据、实时行情） | 可选 |
 
 #### ✅ 最小配置示例
 
@@ -575,6 +576,12 @@ PUSHOVER_API_TOKEN=your_api_token
 - 免费，无需配置
 - 支持美股/港股数据
 - 美股历史数据与实时行情均统一使用 YFinance，以避免 akshare 美股复权异常导致的技术指标错误
+
+### MyQuant 掘金量化
+- 需要注册获取 Token
+- 支持历史数据、实时行情、股票列表、主要指数
+- 设置 `MYQUANT_TOKEN`（[文档](https://www.myquant.cn/docs2/sdk/python/快速开始.html)）
+- 依赖：`pip install gm`
 
 ---
 

@@ -8,6 +8,11 @@
 ## [Unreleased]
 
 ### 新增（#minor）
+- 📊 **MyQuant 掘金量化数据源**
+  - 新增 `data_provider/myquant_fetcher.py`，支持历史数据、实时行情、股票列表、主要指数获取
+  - 配置项：`MYQUANT_TOKEN` 环境变量（[文档](https://www.myquant.cn/docs2/sdk/python/快速开始.html)）
+  - 优先级：已配置时为 1（最高），未配置时为 99（不可用）
+  - 依赖：`gm` SDK（`pip install gm`）
 - 📅 **交易日判断**（Issue #373）
   - 默认非交易日不执行分析，按 A 股 / 港股 / 美股各自交易日历区分
   - 混合持仓时，每只股票只在其市场开市日分析，休市股票当日跳过

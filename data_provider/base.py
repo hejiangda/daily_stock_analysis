@@ -361,6 +361,7 @@ class DataFetcherManager:
 
         优先级动态调整逻辑：
         - 如果配置了 TUSHARE_TOKEN：Tushare 优先级提升为 0（最高）
+        - 如果配置了 MYQUANT_TOKEN：MyQuant 优先级为 1（高优先级）
         - 否则按默认优先级：
           0. EfinanceFetcher (Priority 0) - 最高优先级
           1. AkshareFetcher (Priority 1)
@@ -368,6 +369,7 @@ class DataFetcherManager:
           2. TushareFetcher (Priority 2)
           3. BaostockFetcher (Priority 3)
           4. YfinanceFetcher (Priority 4)
+          99. MyQuantFetcher (Priority 99) - 未配置 Token 时不可用
         """
         from .efinance_fetcher import EfinanceFetcher
         from .akshare_fetcher import AkshareFetcher
@@ -375,6 +377,7 @@ class DataFetcherManager:
         from .pytdx_fetcher import PytdxFetcher
         from .baostock_fetcher import BaostockFetcher
         from .yfinance_fetcher import YfinanceFetcher
+        from .myquant_fetcher import MyQuantFetcher
         from src.config import get_config
 
         config = get_config()
@@ -386,6 +389,7 @@ class DataFetcherManager:
         pytdx = PytdxFetcher()      # 通达信数据源（可配 PYTDX_HOST/PYTDX_PORT）
         baostock = BaostockFetcher()
         yfinance = YfinanceFetcher()
+        myquant = MyQuantFetcher()  # 会根据 Token 配置自动调整优先级
 
         # 初始化数据源列表
         self._fetchers = [
@@ -395,9 +399,11 @@ class DataFetcherManager:
             pytdx,
             baostock,
             yfinance,
+            myquant,
         ]
 
-        # 按优先级排序（Tushare 如果配置了 Token 且初始化成功，优先级为 0）
+        # 按优先级排序（Tushare 如果配置了 Token 且初始化成功，优先级为 -1）
+        # MyQuant 如果配置了 Token 且初始化成功，优先级为 1
         self._fetchers.sort(key=lambda f: f.priority)
 
         # 构建优先级说明

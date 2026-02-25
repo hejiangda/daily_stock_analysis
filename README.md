@@ -45,7 +45,7 @@
 | 类型 | 支持 |
 |------|------|
 | AI 模型 | [AIHubMix](https://aihubmix.com/?aff=CfMq)、Gemini（免费）、OpenAI 兼容、DeepSeek、通义千问、Claude、Ollama |
-| 行情数据 | AkShare、Tushare、Pytdx、Baostock、YFinance |
+| 行情数据 | AkShare、Tushare、Pytdx、Baostock、YFinance、MyQuant(掘金量化) |
 | 新闻搜索 | Tavily、SerpAPI、Bocha、Brave |
 
 > 注：美股历史数据与实时行情统一使用 YFinance，确保复权一致性
@@ -133,6 +133,7 @@
 | `BOCHA_API_KEYS` | [博查搜索](https://open.bocha.cn/) Web Search API（中文搜索优化，支持AI摘要，多个key用逗号分隔） | 可选 |
 | `BRAVE_API_KEYS` | [Brave Search](https://brave.com/search/api/) API（隐私优先，美股优化，多个key用逗号分隔） | 可选 |
 | `TUSHARE_TOKEN` | [Tushare Pro](https://tushare.pro/weborder/#/login?reg=834638 ) Token | 可选 |
+| `MYQUANT_TOKEN` | [MyQuant 掘金量化](https://www.myquant.cn/) Token（历史数据、实时行情） | 可选 |
 | `WECHAT_MSG_TYPE` | 企微消息类型，默认 markdown，支持配置 text 类型，发送纯 markdown 文本 | 可选 |
 | `NEWS_MAX_AGE_DAYS` | 新闻最大时效（天），默认 3，避免使用过时信息 | 可选 |
 | `BIAS_THRESHOLD` | 乖离率阈值（%），默认 5.0，超过提示不追高；强势趋势股自动放宽 | 可选 |
